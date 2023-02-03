@@ -45,19 +45,38 @@ final class CommentGeneratorResourceTest: XCTestCase {
         XCTAssertEqual(name.count, 2)
     }
 
+    func test_generate_initialName() {
+        // given
+        var fullName = ""
+        var initialName = ""
+
+        // when
+        fullName = sut.generateFullName()
+        let name = fullName.split(separator: " ")
+        initialName = sut.getInitials(from: fullName)
+
+        // result
+        XCTAssertFalse(fullName.isEmpty)
+        XCTAssertEqual(name.count, 2)
+        XCTAssertEqual(initialName.count, 2)
+    }
+
     func test_generate_comment() {
         // given
+        var commentAuthorInitial = ""
         var commentAuthor = ""
         var commentText = ""
 
         // when
         let comment = sut.generateComment()
+        commentAuthorInitial = comment.authorInitial
         commentAuthor = comment.author
         let name = commentAuthor.split(separator: " ")
         commentText = comment.text
 
         // result
         XCTAssertNotNil(comment)
+        XCTAssertEqual(commentAuthorInitial.count, 2)
         XCTAssertFalse(commentAuthor.isEmpty)
         XCTAssertEqual(name.count, 2)
         XCTAssertFalse(commentText.isEmpty)

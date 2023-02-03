@@ -23,7 +23,16 @@ class CommentGenerator {
     }
 
     func generateComment() -> Comment {
-        return Comment(author: generateFullName(), text: generateText())
+        let fullName = generateFullName()
+        return Comment(authorInitial: getInitials(from: fullName),
+                       author: fullName, 
+                       text: generateText())
+    }
+
+    func getInitials(from name: String) -> String {
+        let words = name.split(separator: " ")
+        let initials = words.map { String($0.first!) }
+        return initials.joined()
     }
 
     func generateFullName() -> String {

@@ -8,6 +8,7 @@
 import Foundation
 
 struct Comment {
+    var authorInitial: String
     var author: String
     var text: String
 }
