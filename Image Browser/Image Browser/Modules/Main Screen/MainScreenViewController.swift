@@ -29,6 +29,16 @@ class MainScreenViewController: UIViewController {
         pageNumber += 1
         viewModel.fetchImages(page: pageNumber)
     }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == DetailViewController.identifier {
+            guard let detailVC = segue.destination as? DetailViewController,
+                  let mainScreenModel = sender as? MainScreenModel else {
+                return
+            }
+            detailVC.detailData = mainScreenModel
+        }
+    }
 }
 
 // MARK: Tableview delegate -
@@ -43,6 +53,11 @@ extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
         }
         cell.bind(with: viewModel.getImageCell(at: indexPath.row))
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: DetailViewController.identifier,
+                     sender: viewModel.getImageCell(at: indexPath.row))
     }
 }
 

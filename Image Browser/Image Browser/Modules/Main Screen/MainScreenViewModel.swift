@@ -52,7 +52,8 @@ class MainScreenViewModel: NSObject {
 
     private func processResponse(_ response: ImageListResponse) {
         let imageList = response.map { res in
-            MainScreenModel(authorName: res.author,
+            MainScreenModel(id: res.id,
+                            authorName: res.author,
                             imageUrl: Config.shared.baseUrl+"/id/\(res.id)/100/86")
         }
         images += imageList
@@ -61,6 +62,7 @@ class MainScreenViewModel: NSObject {
 }
 
 struct MainScreenModel {
+    var id: String
     var authorName: String
     var imageUrl: String
 }
