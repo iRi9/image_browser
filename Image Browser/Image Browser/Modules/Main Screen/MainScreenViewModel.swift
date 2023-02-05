@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol MainScreenViewModelDelegate {
+protocol ViewModelDelegate {
     func onLoading(status: Bool)
     func showError(message: String)
     func reloadView()
 }
 
 class MainScreenViewModel: NSObject {
-    var delegate: MainScreenViewModelDelegate?
+    var delegate: ViewModelDelegate?
 
     private var api: ImageListDelegate
     private var errorMessage: String?

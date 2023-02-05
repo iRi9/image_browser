@@ -9,13 +9,15 @@ import Foundation
 
 class CommentGenerator {
 
+    static let shared = CommentGenerator()
+
     private var nounsPath: String!
     private var verbsPath: String!
     private var lastNamesPath: String!
     private var firstNamesPath: String!
-    private let limitWords = Int.random(in: 0..<15)
+    private let limitWords = 10
 
-    init() {
+    private init() {
         nounsPath = Bundle(for: type(of: self)).path(forResource: "nouns", ofType: "json")
         verbsPath = Bundle(for: type(of: self)).path(forResource: "verbs", ofType: "json")
         lastNamesPath = Bundle(for: type(of: self)).path(forResource: "lastNames", ofType: "json")
@@ -25,7 +27,7 @@ class CommentGenerator {
     func generateComment() -> Comment {
         let fullName = generateFullName()
         return Comment(authorInitial: getInitials(from: fullName),
-                       author: fullName, 
+                       author: fullName,
                        text: generateText())
     }
 

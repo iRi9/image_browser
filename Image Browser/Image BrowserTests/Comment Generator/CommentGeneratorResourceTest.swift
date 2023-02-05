@@ -13,7 +13,7 @@ final class CommentGeneratorResourceTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        sut = CommentGenerator()
+        sut = CommentGenerator.shared
     }
 
     override func tearDown() {

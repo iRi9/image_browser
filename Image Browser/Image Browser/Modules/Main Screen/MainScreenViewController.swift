@@ -31,12 +31,12 @@ class MainScreenViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == DetailViewController.identifier {
-            guard let detailVC = segue.destination as? DetailViewController,
+        if segue.identifier == DetailScreenViewController.identifier {
+            guard let detailVC = segue.destination as? DetailScreenViewController,
                   let mainScreenModel = sender as? MainScreenModel else {
                 return
             }
-            detailVC.detailData = mainScreenModel
+            detailVC.imageId = Int(mainScreenModel.id)
         }
     }
 }
@@ -56,13 +56,13 @@ extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: DetailViewController.identifier,
+        performSegue(withIdentifier: DetailScreenViewController.identifier,
                      sender: viewModel.getImageCell(at: indexPath.row))
     }
 }
 
 // MARK: ViewModel delegate -
-extension MainScreenViewController: MainScreenViewModelDelegate {
+extension MainScreenViewController: ViewModelDelegate {
     func onLoading(status: Bool) {
         isLoading = status
     }
