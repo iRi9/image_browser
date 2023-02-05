@@ -29,6 +29,16 @@ class MainScreenViewController: UIViewController {
         pageNumber += 1
         viewModel.fetchImages(page: pageNumber)
     }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == DetailScreenViewController.identifier {
+            guard let detailVC = segue.destination as? DetailScreenViewController,
+                  let mainScreenModel = sender as? MainScreenModel else {
+                return
+            }
+            detailVC.imageId = Int(mainScreenModel.id)
+        }
+    }
 }
 
 // MARK: Tableview delegate -
@@ -44,10 +54,22 @@ extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
         cell.bind(with: viewModel.getImageCell(at: indexPath.row))
         return cell
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: DetailScreenViewController.identifier,
+                     sender: viewModel.getImageCell(at: indexPath.row))
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == viewModel.getNumberOfCell() - 1 && !isLoading {
+            pageNumber += 1
+            viewModel.fetchImages(page: pageNumber)
+        }
+    }
 }
 
 // MARK: ViewModel delegate -
-extension MainScreenViewController: MainScreenViewModelDelegate {
+extension MainScreenViewController: ViewModelDelegate {
     func onLoading(status: Bool) {
         isLoading = status
     }
@@ -61,16 +83,4 @@ extension MainScreenViewController: MainScreenViewModelDelegate {
     }
 
 
-}
-
-// MARK: Invinite Scroll -
-extension MainScreenViewController: UIScrollViewDelegate {
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if (scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height {
-            if !isLoading {
-                pageNumber += 1
-                viewModel.fetchImages(page: pageNumber)
-            }
-        }
-    }
 }

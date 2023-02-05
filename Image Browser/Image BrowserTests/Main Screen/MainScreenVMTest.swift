@@ -110,7 +110,7 @@ class MockApi: ImageListDelegate {
 
 
 // MARK: - Mock VM
-class MockVM: MainScreenViewModelDelegate {
+class MockVM: ViewModelDelegate {
     var isLoading = false
     var isError = false
     var isReloadView = false
