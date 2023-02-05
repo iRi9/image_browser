@@ -59,6 +59,13 @@ extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
         performSegue(withIdentifier: DetailScreenViewController.identifier,
                      sender: viewModel.getImageCell(at: indexPath.row))
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == viewModel.getNumberOfCell() - 1 && !isLoading {
+            pageNumber += 1
+            viewModel.fetchImages(page: pageNumber)
+        }
+    }
 }
 
 // MARK: ViewModel delegate -
@@ -76,16 +83,4 @@ extension MainScreenViewController: ViewModelDelegate {
     }
 
 
-}
-
-// MARK: Invinite Scroll -
-extension MainScreenViewController: UIScrollViewDelegate {
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if (scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height {
-            if !isLoading {
-                pageNumber += 1
-                viewModel.fetchImages(page: pageNumber)
-            }
-        }
-    }
 }
